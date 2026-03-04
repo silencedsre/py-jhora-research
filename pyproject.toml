@@ -1,0 +1,22 @@
+[project]
+name = "py-jhora-app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.133.1",
+    "geocoder>=1.38.1",
+    "geopy>=2.4.1",
+    "img2pdf>=0.6.3",
+    "lxml>=6.0.2",
+    "numpy>=2.4.2",
+    "pandas>=3.0.1",
+    "pyjhora>=4.7.0",
+
+    "pyswisseph>=2.10.3.2",
+    "pytz>=2025.2",
+    "requests>=2.32.5",
+    "timezonefinder>=8.2.1",
+    "uvicorn[standard]>=0.41.0",
+]

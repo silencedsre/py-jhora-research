@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Swiss Ephemeris binary data files (download manually - see README)
+PyJHora/src/jhora/data/ephe/*.se1
+PyJHora/src/jhora/data/ephe/fixstars.cat
+PyJHora/src/jhora/data/ephe/sefstars.txt
+PyJHora/src/jhora/data/ephe/seasnam.txt
+PyJHora/src/jhora/data/ephe/seleapsec.txt
+PyJHora/src/jhora/data/ephe/seorbel.txt
+PyJHora/src/jhora/data/ephe/ast_list.txt
+
+# Test output data
+tests/data/
