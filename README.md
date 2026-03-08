@@ -55,6 +55,10 @@ npm run dev
 
 ## Credits
 
-This project is built upon the [PyJHora](https://github.com/naturalstupid/PyJHora) library (licensed under AGPL-3.0). Special thanks to the original authors for their extensive work on Vedic astrology computations.
+This project is built upon the [PyJHora](https://github.com/naturalstupid/PyJHora) library. Special thanks to the original authors for their extensive work on Vedic astrology computations.
 
 Provided by [rtayoga.com](https://rtayoga.com).
+
+## License
+
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)** - see the [LICENSE](LICENSE) file for details.
