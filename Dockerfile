@@ -4,12 +4,11 @@ FROM public.ecr.aws/lambda/python:3.11
 WORKDIR ${LAMBDA_TASK_ROOT}
 
 # GitHub Actions will not have the local .gitignore'd PyJHora ephemeris data.
-# Download the archived ephemeris data from the GitHub release.
-RUN apt-get update && apt-get install -y wget unzip && rm -rf /var/lib/apt/lists/*
-RUN mkdir -p PyJHora/src/jhora/data/ephe && cd PyJHora/src/jhora/data/ephe && \
-    wget -qO ephemeris_data.zip https://github.com/silencedsre/py-jhora-research/releases/download/v1.0.0/ephemeris_data.zip && \
-    unzip -q ephemeris_data.zip && \
-    rm ephemeris_data.zip
+# Download the archived ephemeris data from the GitHub release using Python (OS agnostic).
+RUN python -c "import urllib.request, zipfile, io, os; \
+os.makedirs('PyJHora/src/jhora/data/ephe', exist_ok=True); \
+resp = urllib.request.urlopen('https://github.com/silencedsre/py-jhora-research/releases/download/v1.0.0/ephemeris_data.zip'); \
+zipfile.ZipFile(io.BytesIO(resp.read())).extractall('PyJHora/src/jhora/data/ephe')"
 
 # Copy the requirements file into the container
 COPY requirements.txt .
