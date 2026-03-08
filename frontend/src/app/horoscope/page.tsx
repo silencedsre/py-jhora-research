@@ -43,7 +43,7 @@ const PLANET_SYMBOLS: Record<string, string> = {
     Venus: '♀', Saturn: '♄', Rahu: '☊', Ketu: '☋',
 };
 
-const SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+const SIGN_NAMES = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
 
 export default function HoroscopePage() {
     const { birthData, isSet } = useBirthData();
@@ -53,7 +53,7 @@ export default function HoroscopePage() {
     const [loading, setLoading] = useState(false);
     const [chartLoading, setChartLoading] = useState(false);
     const [error, setError] = useState('');
-    const [chartStyle, setChartStyle] = useState<'south' | 'north'>('south');
+    const [chartStyle, setChartStyle] = useState<'south' | 'north'>('north');
     const [showOuterPlanets, setShowOuterPlanets] = useState(false);
 
     useEffect(() => {

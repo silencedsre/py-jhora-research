@@ -33,7 +33,7 @@ export default function BirthDataForm() {
     const [date, setDate] = useState(todayStr());
     const [time, setTime] = useState(nowTimeStr());
     const [language, setLanguage] = useState('en');
-    const [ayanamsa, setAyanamsa] = useState('TRUE_PUSHYA');
+    const [ayanamsa, setAyanamsa] = useState('LAHIRI');
     const [trueNodes, setTrueNodes] = useState(true);
     const [sunriseDiscCenter, setSunriseDiscCenter] = useState(true);
     const [sunriseRefraction, setSunriseRefraction] = useState(false);

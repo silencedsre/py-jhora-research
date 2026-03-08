@@ -15,7 +15,7 @@ export function TajikView({ birthData, isSet }: TajikProps) {
     const [result, setResult] = useState<Record<string, unknown> | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [chartStyle, setChartStyle] = useState<'north' | 'south'>('south');
+    const [chartStyle, setChartStyle] = useState<'north' | 'south'>('north');
 
     const handleCompute = async () => {
         if (!isSet || !birthData) return;
