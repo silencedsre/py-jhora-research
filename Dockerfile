@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.11
+FROM public.ecr.aws/lambda/python:3.11.2024.11.22.11
 
 # Set the working directory to the Lambda task root
 WORKDIR ${LAMBDA_TASK_ROOT}
@@ -13,8 +13,9 @@ RUN python extract_ephe.py && rm extract_ephe.py
 # Copy the requirements file into the container
 COPY requirements.txt .
 
-# Install system dependencies required for some Python packages (like lxml, numpy)
-RUN yum install -y libxml2-devel libxslt-devel gcc gcc-c++ python3-devel && yum clean all
+# Install system dependencies required for some Python packages (like lxml)
+# AL2023 uses dnf instead of yum
+RUN dnf install -y libxml2-devel libxslt-devel gcc gcc-c++ python3-devel && dnf clean all
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
