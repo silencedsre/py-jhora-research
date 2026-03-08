@@ -13,6 +13,9 @@ RUN python extract_ephe.py && rm extract_ephe.py
 # Copy the requirements file into the container
 COPY requirements.txt .
 
+# Install system dependencies required for some Python packages (like lxml)
+RUN dnf install -y libxml2-devel libxslt-devel gcc python3-devel && dnf clean all
+
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
