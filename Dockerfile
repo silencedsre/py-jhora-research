@@ -1,28 +1,38 @@
+# Stage 1: Build wheels on a modern image (Debian/GCC 12)
+# This bypasses the old GCC 7 on the final Lambda image
+FROM python:3.11-slim AS builder
+
+WORKDIR /build
+
+# Build dependencies for lxml, numpy, pandas
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libxml2-dev \
+    libxslt1-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+# Pre-build wheels into a local folder
+RUN pip wheel --no-cache-dir -r requirements.txt -w /wheels
+
+# Stage 2: Final Lambda Image
 FROM public.ecr.aws/lambda/python:3.11.2026.02.28.00
 
-# Set the working directory to the Lambda task root
 WORKDIR ${LAMBDA_TASK_ROOT}
 
-# The ephemeris data is downloaded in the GitHub Action runner and copied in.
-# We unzip it into the expected directory using a dedicated Python script.
+# 1. Handle ephemeris data (copied from GitHub runner build context)
 RUN mkdir -p PyJHora/src/jhora/data/ephe
 COPY ephemeris_data.zip* ./
 COPY scripts/extract_ephe.py ./
 RUN python extract_ephe.py && rm extract_ephe.py
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+# 2. Copy and install pre-built wheels from builder stage
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache-dir --no-index --find-links=/wheels /wheels/*.whl && rm -rf /wheels
 
-# Install system dependencies required for some Python packages (like lxml)
-# AL2023 uses dnf instead of yum
-RUN dnf install -y libxml2-devel libxslt-devel gcc gcc-c++ python3-devel && dnf clean all
-
-# Install the dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the application code into the container
-# This copies everything in the current directory (like PyJHora, api, Data, etc.)
+# 3. Copy application code
 COPY . .
 
-# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
+# Set the CMD to your handler
 CMD [ "api.main.handler" ]
