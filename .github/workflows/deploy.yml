@@ -35,8 +35,9 @@ jobs:
         # The name of the ECR repository you created in AWS (e.g., pyjhora-api)
         ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
         IMAGE_TAG: latest
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        docker build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build --build-arg GITHUB_TOKEN=$GITHUB_TOKEN --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     # Optional: Automatically trigger the Lambda function to update to the new image
