@@ -4,12 +4,19 @@ FROM python:3.11-slim AS builder
 
 WORKDIR /build
 
-# Build dependencies for lxml, numpy, pandas
+# Build dependencies for lxml, numpy, pandas, cffi, pillow, pikepdf, etc.
 RUN apt-get update && apt-get install -y \
+    build-essential \
+    pkg-config \
     gcc \
     g++ \
     libxml2-dev \
     libxslt1-dev \
+    libffi-dev \
+    zlib1g-dev \
+    libjpeg-dev \
+    libopenjp2-7-dev \
+    libqpdf-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
