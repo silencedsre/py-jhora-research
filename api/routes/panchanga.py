@@ -27,7 +27,7 @@ async def get_panchanga(data: BirthData):
         result = {}
 
         # Vaara (day of week)
-        vaaram = drik.vaara(jd)
+        vaaram = drik.vaara(jd, place)
         result["vaara"] = {"index": vaaram, "name": utils.DAYS_LIST[vaaram]}
 
         # Tithi

@@ -16,7 +16,7 @@ export default function Navbar() {
     return (
         <nav className="navbar">
             <div className="navbar-inner">
-                <Link href="/" className="navbar-brand">ज्योतिष PyJHora</Link>
+                <Link href="/" className="navbar-brand">ज्योतिष PyJHora-Research</Link>
                 <ul className="navbar-links">
                     {links.map(l => (
                         <li key={l.href}>

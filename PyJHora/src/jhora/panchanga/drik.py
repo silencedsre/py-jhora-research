@@ -27,7 +27,7 @@
     To calculate panchanga/calendar elements such as tithi, nakshatra, etc.
     Uses swiss ephemeris
 """
-from math import ceil
+from math import ceil, floor
 from collections import namedtuple as struct
 import swisseph as swe
 from _datetime import datetime, timedelta
@@ -903,14 +903,30 @@ def karana(jd, place):
     else: # first of tithi
         _k_start = _t_start; _k_end = _t_mid
     return _karana,_k_start,_k_end
-def vaara(jd):
+def vaara(jd, place=None):
     """
         Weekday for given Julian day. 
         @param jd: Julian Day Number of the date/time
+        @param place: Optional Place struct ('Place',latitude,longitude,timezone)
         @return: day of the date
           0 = Sunday, 1 = Monday,..., 6 = Saturday
     """
-    return ( int(ahargana(jd)) % 7 + 5) % 7 if const.use_aharghana_for_vaara_calcuation else int(ceil(jd + 1) % 7)  
+    if place:
+        # Vedic day changes at sunrise
+        # sunrise() returns [local_time_hrs, local_time_str, rise_jd]
+        rise_jd = sunrise(jd, place)[2]
+        if jd < rise_jd:
+            # Before sunrise, it's technically still the previous day's Vaara
+            return int(floor(jd - 0.5) + 1) % 7
+    
+    # Standard formula flips at noon UTC: int(ceil(jd + 1) % 7)
+    # Robust Western formula flips at midnight UTC: int(floor(jd + 0.5) + 1) % 7
+    # Since JD starts at noon UTC:
+    # JD 2461108.0 = March 8, 2026 12:00 UTC (Sunday)
+    # JD 2461108.5 = March 9, 2026 00:00 UTC (Monday)
+    # (2461108.5 + 0.5) + 1 = 2461110.0 % 7 = 1 (Monday) - CORRECT
+    return int(floor(jd + 0.5) + 1) % 7
+
 def lunar_month(jd, place):
     """
         Returns lunar month and if it is adhika or not.

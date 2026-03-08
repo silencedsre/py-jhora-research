@@ -50,3 +50,11 @@ cd frontend
 npm run dev
 ```
 *This will start your React application, usually accessible at `http://localhost:3000`.*
+
+---
+
+## Credits
+
+This project is built upon the [PyJHora](https://github.com/naturalstupid/PyJHora) library (licensed under AGPL-3.0). Special thanks to the original authors for their extensive work on Vedic astrology computations.
+
+Provided by [rtayoga.com](https://rtayoga.com).

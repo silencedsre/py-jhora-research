@@ -9,6 +9,7 @@ export default function PanchangaPage() {
   const [eclipseResult, setEclipseResult] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showEclipses, setShowEclipses] = useState(false);
 
   useEffect(() => {
     if (!isSet || !birthData) return;
@@ -86,51 +87,73 @@ export default function PanchangaPage() {
       )}
 
       {eclipse && (
-        <div className="grid-2" style={{ marginTop: '1.5rem' }}>
-          {eclipse.solar_eclipse && (() => {
-            const s = eclipse.solar_eclipse as Record<string, unknown>;
-            return (
-              <div className="card">
-                <div className="card-title">🌑 Solar Eclipse</div>
-                <div className="data-row"><span className="data-label">Type</span><span className="data-value highlight">{s.type as string}</span></div>
-                {Boolean(s.start) && <div className="data-row"><span className="data-label">Start</span><span className="data-value">{(s.start as Record<string, string>).date} {(s.start as Record<string, string>).time}</span></div>}
-                {Boolean(s.peak) && <div className="data-row"><span className="data-label">Peak</span><span className="data-value highlight">{(s.peak as Record<string, string>).date} {(s.peak as Record<string, string>).time}</span></div>}
-                {Boolean(s.end) && <div className="data-row"><span className="data-label">End</span><span className="data-value">{(s.end as Record<string, string>).date} {(s.end as Record<string, string>).time}</span></div>}
-                {Boolean(s.note) && <div className="data-row" style={{ marginTop: '0.5rem' }}><span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ℹ️ {s.note as string}</span></div>}
-              </div>
-            );
-          })()}
-          {eclipse.lunar_eclipse && (() => {
-            const l = eclipse.lunar_eclipse as Record<string, unknown>;
-            const timeLabels: Record<string, string> = {
-              penumbral_start: 'Penumbral Start',
-              partial_start: 'Partial Start',
-              total_start: 'Total Start',
-              peak: 'Peak',
-              total_end: 'Total End',
-              partial_end: 'Partial End',
-              penumbral_end: 'Penumbral End',
-            };
-            return (
-              <div className="card">
-                <div className="card-title">🌕 Lunar Eclipse</div>
-                <div className="data-row"><span className="data-label">Type</span><span className="data-value highlight">{l.type as string}</span></div>
-                {Object.entries(timeLabels).map(([key, label]) => {
-                  const t = l[key] as Record<string, string> | undefined;
-                  if (!t) return null;
-                  return (
-                    <div key={key} className="data-row">
-                      <span className="data-label">{label}</span>
-                      <span className="data-value" style={{ fontWeight: key === 'peak' ? 700 : 400, color: key === 'peak' ? 'var(--accent-gold)' : undefined }}>
-                        {t.date} {t.time}
-                      </span>
-                    </div>
-                  );
-                })}
-                {Boolean(l.note) && <div className="data-row" style={{ marginTop: '0.5rem' }}><span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ℹ️ {l.note as string}</span></div>}
-              </div>
-            );
-          })()}
+        <div className="card" style={{ marginTop: '1.5rem', padding: '1.5rem', transition: 'all 0.3s' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              cursor: 'pointer',
+              userSelect: 'none'
+            }}
+            onClick={() => setShowEclipses(!showEclipses)}
+          >
+            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', color: 'var(--accent-gold)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              🌒 Upcoming Solar & Lunar Eclipses
+            </span>
+            <span style={{ fontSize: '1.2rem', color: 'var(--text-muted)', transition: 'transform 0.3s', transform: showEclipses ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+              ▼
+            </span>
+          </div>
+
+          {showEclipses && (
+            <div className="grid-2" style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-subtle)' }}>
+              {eclipse.solar_eclipse && (() => {
+                const s = eclipse.solar_eclipse as Record<string, unknown>;
+                return (
+                  <div>
+                    <h3 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>🌑 Solar Eclipse</h3>
+                    <div className="data-row"><span className="data-label">Type</span><span className="data-value highlight">{s.type as string}</span></div>
+                    {Boolean(s.start) && <div className="data-row"><span className="data-label">Start</span><span className="data-value">{(s.start as Record<string, string>).date} {(s.start as Record<string, string>).time}</span></div>}
+                    {Boolean(s.peak) && <div className="data-row"><span className="data-label">Peak</span><span className="data-value highlight">{(s.peak as Record<string, string>).date} {(s.peak as Record<string, string>).time}</span></div>}
+                    {Boolean(s.end) && <div className="data-row"><span className="data-label">End</span><span className="data-value">{(s.end as Record<string, string>).date} {(s.end as Record<string, string>).time}</span></div>}
+                    {Boolean(s.note) && <div className="data-row" style={{ marginTop: '0.5rem', borderBottom: 'none' }}><span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ℹ️ {s.note as string}</span></div>}
+                  </div>
+                );
+              })()}
+              {eclipse.lunar_eclipse && (() => {
+                const l = eclipse.lunar_eclipse as Record<string, unknown>;
+                const timeLabels: Record<string, string> = {
+                  penumbral_start: 'Penumbral Start',
+                  partial_start: 'Partial Start',
+                  total_start: 'Total Start',
+                  peak: 'Peak',
+                  total_end: 'Total End',
+                  partial_end: 'Partial End',
+                  penumbral_end: 'Penumbral End',
+                };
+                return (
+                  <div>
+                    <h3 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>🌕 Lunar Eclipse</h3>
+                    <div className="data-row"><span className="data-label">Type</span><span className="data-value highlight">{l.type as string}</span></div>
+                    {Object.entries(timeLabels).map(([key, label]) => {
+                      const t = l[key] as Record<string, string> | undefined;
+                      if (!t) return null;
+                      return (
+                        <div key={key} className="data-row">
+                          <span className="data-label">{label}</span>
+                          <span className="data-value" style={{ fontWeight: key === 'peak' ? 700 : 400, color: key === 'peak' ? 'var(--accent-gold)' : undefined }}>
+                            {t.date} {t.time}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    {Boolean(l.note) && <div className="data-row" style={{ marginTop: '0.5rem', borderBottom: 'none' }}><span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ℹ️ {l.note as string}</span></div>}
+                  </div>
+                );
+              })()}
+            </div>
+          )}
         </div>
       )}
     </>
