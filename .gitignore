@@ -20,3 +20,7 @@ PyJHora/src/jhora/data/ephe/ast_list.txt
 
 # Test output data
 tests/data/
+
+# Deployment Artifacts
+*.zip
+ephemeris_data.zip
