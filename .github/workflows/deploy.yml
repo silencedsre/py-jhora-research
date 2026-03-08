@@ -30,6 +30,10 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         gh release download v1.0.0 --repo ${{ github.repository }} --pattern "ephemeris_data.zip" --dir .
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
         
     - name: Build, tag, and push Docker image to Amazon ECR
       env:
