@@ -21,24 +21,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </div>
             <footer style={{
-              marginTop: '4rem',
-              paddingTop: '2rem',
+              marginTop: '2rem',
+              padding: '1.2rem 1rem',
               borderTop: '1px solid var(--border-subtle)',
               display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
+              flexDirection: 'column',
               alignItems: 'center',
-              gap: '1.5rem',
-              fontSize: '0.85rem',
-              color: 'var(--text-muted)'
+              gap: '0.2rem',
+              fontSize: '0.82rem',
+              color: 'var(--text-muted)',
+              textAlign: 'center'
             }}>
-              <span>
+              <div>
                 Powered by <a href="https://github.com/naturalstupid/PyJHora" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>PyJHora</a> <span style={{ opacity: 0.7 }}>(AGPL)</span>
-              </span>
-              <span style={{ color: 'var(--border-subtle)' }}>&bull;</span>
-              <span>
-                Provided for Research by <a href="https://rtayoga.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>www.rtayoga.com</a>
-              </span>
+              </div>
+              <div style={{ lineHeight: 1.4 }}>
+                Provided for Research by <a href="https://github.com/silencedsre/py-jhora-research" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>py-jhora-research</a> & <a href="https://rtayoga.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>www.rtayoga.com</a>
+              </div>
             </footer>
           </div>
         </BirthDataProvider>
