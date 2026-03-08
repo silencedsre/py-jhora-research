@@ -3,13 +3,14 @@ FROM public.ecr.aws/lambda/python:3.11
 # Set the working directory to the Lambda task root
 WORKDIR ${LAMBDA_TASK_ROOT}
 
-# GitHub Actions will not have the local .gitignore'd PyJHora ephemeris data.
-# We accept the GITHUB_TOKEN so this works even on private repositories.
-ARG GITHUB_TOKEN
-
-# Copy the download script and run it
-COPY scripts/download_ephe.py scripts/download_ephe.py
-RUN python scripts/download_ephe.py && rm -rf scripts/
+# The ephemeris data is downloaded in the GitHub Action runner and copied in.
+# We unzip it into the expected directory.
+RUN mkdir -p PyJHora/src/jhora/data/ephe
+COPY ephemeris_data.zip* ./
+RUN if [ -f ephemeris_data.zip ]; then \
+        unzip -q ephemeris_data.zip -d PyJHora/src/jhora/data/ephe && \
+        rm ephemeris_data.zip; \
+    fi
 
 # Copy the requirements file into the container
 COPY requirements.txt .
