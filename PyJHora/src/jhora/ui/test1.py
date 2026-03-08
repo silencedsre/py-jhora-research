@@ -31,7 +31,8 @@ from PyQt6.QtWidgets import QStyledItemDelegate, QWidget, QVBoxLayout, QHBoxLayo
 from PyQt6.QtGui import QFont, QFontMetrics
 from PyQt6.QtCore import Qt, QTimer, QDateTime, QTimeZone
 from _datetime import datetime
-import img2pdf
+# import img2pdf
+
 from PIL import Image
 from jhora import const, utils
 from jhora.panchanga import drik, pancha_paksha

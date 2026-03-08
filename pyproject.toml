@@ -8,7 +8,6 @@ dependencies = [
     "fastapi>=0.133.1",
     "geocoder>=1.38.1",
     "geopy>=2.4.1",
-    "img2pdf>=0.6.3",
     "lxml>=6.0.2",
     "mangum>=0.21.0",
     "numpy>=2.4.2",

@@ -435,7 +435,8 @@ Also Included :
 * Marriage compatibility details (0.9.6)
 * Special Lagnas and Upagrahas added to charts (1.0.1)
 * Ashtaka Varga charts and Shodhya pinda(0.9.8)
-* Print the UI as PDF (using img2pdf and pillow to combine two tabs into one page)
+* Print the UI as PDF (using Pillow to combine two tabs into one page)
+
 
 Available in English, Tamil and Telugu, Hindi(0.9.7) and Kannada (0.9.8)
 -------------------------------------------------------------------------

@@ -26,7 +26,8 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import Qt
 from _datetime import datetime, timedelta,time,date
-import img2pdf
+# import img2pdf
+
 from jhora.horoscope.match import compatibility
 from jhora import utils
 

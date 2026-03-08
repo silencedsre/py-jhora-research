@@ -31,7 +31,8 @@ from PyQt6.QtWidgets import QStyledItemDelegate, QWidget, QVBoxLayout, QHBoxLayo
 from PyQt6.QtGui import QFont, QFontMetrics
 from PyQt6.QtCore import Qt, QTimer, QDateTime, QTimeZone
 from _datetime import datetime
-import img2pdf
+# import img2pdf
+
 from PIL import Image
 from jhora import const, utils
 from jhora.panchanga import drik, pancha_paksha, vratha, info
@@ -795,9 +796,14 @@ class PanchangaWidget(QWidget):
                 _combine_multiple_images(image_files[i:i+2],combined_image_file)
                 combined_image_files.append(combined_image_file)
                 ci += 1
-            with open(pdf_file_name,"wb") as f:
-                f.write(img2pdf.convert(combined_image_files))
-            f.close()
+            # Replace img2pdf with Pillow
+            if combined_image_files:
+                imgs = [Image.open(img_path).convert("RGB") for img_path in combined_image_files]
+                if len(imgs) > 1:
+                    imgs[0].save(pdf_file_name, save_all=True, append_images=imgs[1:])
+                else:
+                    imgs[0].save(pdf_file_name)
+
         for image_file in image_files+combined_image_files:
             if os.path.exists(image_file):
                 os.remove(image_file)

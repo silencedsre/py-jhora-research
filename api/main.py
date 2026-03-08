@@ -8,8 +8,9 @@ import os
 _pyjhora_src = os.path.join(os.path.dirname(__file__), 'PyJHora', 'src')
 sys.path.insert(0, os.path.abspath(_pyjhora_src))
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, Security
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security.api_key import APIKeyHeader
 from mangum import Mangum
 
 from api.routes import panchanga, horoscope, charts, dhasa, match, transit, eclipse
@@ -23,23 +24,35 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+# Security Configuration
+ALLOWED_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "*").split(",")
+API_KEY = os.environ.get("API_KEY")
+API_KEY_NAME = "X-API-Key"
+api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
+
+async def get_api_key(header_value: str = Security(api_key_header)):
+    if API_KEY and header_value != API_KEY:
+        raise HTTPException(status_code=403, detail="Could not validate credentials")
+    return header_value
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Register routers
-app.include_router(panchanga.router)
-app.include_router(horoscope.router)
-app.include_router(charts.router)
-app.include_router(dhasa.router)
-app.include_router(match.router)
-app.include_router(transit.router)
-app.include_router(eclipse.router)
+# Register routers (protected by API Key if configured)
+protection = [Depends(get_api_key)]
+app.include_router(panchanga.router, dependencies=protection)
+app.include_router(horoscope.router, dependencies=protection)
+app.include_router(charts.router, dependencies=protection)
+app.include_router(dhasa.router, dependencies=protection)
+app.include_router(match.router, dependencies=protection)
+app.include_router(transit.router, dependencies=protection)
+app.include_router(eclipse.router, dependencies=protection)
 
 handler = Mangum(app)
 
@@ -71,14 +84,14 @@ async def root():
     }
 
 
-@app.get("/api/info/ayanamsas")
+@app.get("/api/info/ayanamsas", dependencies=protection)
 async def list_ayanamsas():
     """List all available ayanamsa modes."""
     from jhora import const
     return {"ayanamsas": list(const.available_ayanamsa_modes.keys())}
 
 
-@app.get("/api/info/nakshatras")
+@app.get("/api/info/nakshatras", dependencies=protection)
 async def list_nakshatras():
     """List all 27 nakshatras."""
     from jhora import utils
@@ -86,7 +99,7 @@ async def list_nakshatras():
     return {"nakshatras": [{"index": i + 1, "name": utils.NAKSHATRA_LIST[i]} for i in range(27)]}
 
 
-@app.get("/api/info/raasis")
+@app.get("/api/info/raasis", dependencies=protection)
 async def list_raasis():
     """List all 12 zodiac signs (raasis)."""
     from jhora import utils
@@ -94,7 +107,7 @@ async def list_raasis():
     return {"raasis": [{"index": i, "name": utils.RAASI_LIST[i]} for i in range(12)]}
 
 
-@app.get("/api/info/cities")
+@app.get("/api/info/cities", dependencies=protection)
 async def list_cities(q: str = ""):
     """
     Search the 135K+ city database. Pass ?q=search_term to filter.

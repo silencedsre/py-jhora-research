@@ -27,7 +27,9 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit
                             QMessageBox, QComboBox, QPushButton, QApplication, QFileDialog
 from PyQt6.QtCore import Qt
 from _datetime import datetime
-import img2pdf
+# import img2pdf
+from PIL import Image
+
 from jhora import utils,const
 from jhora.panchanga import drik
 from jhora.horoscope import main
@@ -603,9 +605,10 @@ class ChartSimple(QWidget):
         if pdf_file:
             im = self.grab()
             im.save(image_file) 
-            with open(pdf_file,"wb") as f:
-                f.write(img2pdf.convert(image_file))
-            f.close()
+            # Replace img2pdf with Pillow
+            img = Image.open(image_file).convert("RGB")
+            img.save(pdf_file)
+
         if os.path.exists(image_file):
             os.remove(image_file)
     def _convert_1d_chart_with_planet_names(self,chart_1d_list): #To be used for Sudarsana Chakra data as input
