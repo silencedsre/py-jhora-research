@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.abspath(_pyjhora_src))
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
 from api.routes import panchanga, horoscope, charts, dhasa, match, transit, eclipse
 
@@ -40,6 +41,7 @@ app.include_router(match.router)
 app.include_router(transit.router)
 app.include_router(eclipse.router)
 
+handler = Mangum(app)
 
 @app.get("/")
 async def root():

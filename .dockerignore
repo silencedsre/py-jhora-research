@@ -1,0 +1,32 @@
+# Ignore frontend application since it's only needed for Vercel/Netlify
+frontend/
+
+# Python caching and virtual environments
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Git repository data
+.git/
+.gitignore
+
+# Environment files
+.env
+.env.local
+
+# IDE and Editor configurations
+.vscode/
+.idea/
+
+# Testing and Coverage
+.pytest_cache/
+htmlcov/
+.coverage
+.tox/
+
+# Local build artifacts
+build/
+dist/
+*.egg-info/
