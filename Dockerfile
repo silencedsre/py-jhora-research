@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.11.2024.11.22.11
+FROM public.ecr.aws/lambda/python:3.11.2026.02.28.00
 
 # Set the working directory to the Lambda task root
 WORKDIR ${LAMBDA_TASK_ROOT}
