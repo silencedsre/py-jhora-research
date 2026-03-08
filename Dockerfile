@@ -14,7 +14,7 @@ RUN python extract_ephe.py && rm extract_ephe.py
 COPY requirements.txt .
 
 # Install system dependencies required for some Python packages (like lxml)
-RUN dnf install -y libxml2-devel libxslt-devel gcc python3-devel && dnf clean all
+RUN yum install -y libxml2-devel libxslt-devel gcc python3-devel && yum clean all
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
