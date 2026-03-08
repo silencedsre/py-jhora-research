@@ -12,7 +12,7 @@ interface DhasaPeriod {
 }
 
 interface DhasaResult {
-    balance?: { nakshatra_index?: number; years_remaining?: number; months_remaining?: number };
+    balance?: { years_remaining?: number; months_remaining?: number; days_remaining?: number };
     periods?: DhasaPeriod[];
     by_dasha?: Record<string, DhasaPeriod[]>;
     total_periods?: number;
@@ -58,12 +58,18 @@ export default function DhasaPage() {
     const data = result?.dhasa_bhukthi;
     const byDasha = data?.by_dasha;
 
+    const parseDashaDate = (s: string): Date => {
+        // Format: "YYYY-MM-DD HH:MM:SS AM/PM" → strip AM/PM suffix, keep rest
+        const cleaned = s.replace(/ ?(AM|PM)$/i, '').trim();
+        return new Date(cleaned.replace(' ', 'T'));
+    };
+
     const activePeriodIndex = data?.periods ? (() => {
         const now = new Date();
         for (let i = data.periods.length - 1; i >= 0; i--) {
             const p = data.periods[i];
             if (p.start_date) {
-                const d = new Date(p.start_date.replace(/ (AM|PM)$/, ''));
+                const d = parseDashaDate(p.start_date);
                 if (!isNaN(d.getTime()) && d <= now) return i;
             }
         }
@@ -103,6 +109,20 @@ export default function DhasaPage() {
                 </div>
             )}
 
+            {data?.balance && (
+                <div className="card" style={{ marginBottom: '1.5rem', background: 'var(--bg-card-hover)', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', justifyContent: 'center' }}>
+                        <span style={{ fontSize: '1.1rem' }}>⏳</span>
+                        <div>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginRight: '0.5rem' }}>Balance at birth:</span>
+                            <span style={{ color: 'var(--accent-gold)', fontWeight: 600 }}>
+                                {data.balance.years_remaining} Years, {data.balance.months_remaining} Months, {data.balance.days_remaining} Days
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {error && <div className="error-box">{error}</div>}
             {loading && <div className="loading-state"><div className="spinner" /> Computing {selectedSystem.replace(/_/g, ' ')} dhasa...</div>}
 
@@ -138,7 +158,7 @@ export default function DhasaPage() {
                                     </span>
                                     {isActive && <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>ACTIVE</span>}
                                     <span style={{ flex: 1, color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                                        {firstDate.split(' ')[0]} → {lastDate.split(' ')[0]}
+                                        Starts: {firstDate.split(' ')[0]}
                                     </span>
                                     <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
                                         {periods.length} periods {isExpanded ? '▲' : '▼'}
@@ -227,11 +247,11 @@ export default function DhasaPage() {
                                                                         ...(isPratyantarCurrent ? { background: 'rgba(245, 200, 66, 0.15)' } : { background: 'var(--bg-card-hover, rgba(0,0,0,0.02))' }),
                                                                     }}>
                                                                         <td style={{ paddingLeft: '2.5rem', color: 'var(--text-muted)', borderLeft: '2px solid var(--border-subtle)' }}>
-                                                                            ↳ {group.name}
+                                                                            ↳
                                                                         </td>
                                                                         {selectedSystem === 'vimsottari' && (
-                                                                            <td style={{ color: isPratyantarCurrent ? 'var(--accent-gold)' : 'var(--text-primary)' }}>
-                                                                                {p.pratyantar || '—'}
+                                                                            <td style={{ color: isPratyantarCurrent ? 'var(--accent-gold)' : 'var(--text-primary)', fontWeight: isPratyantarCurrent ? 600 : 'normal' }}>
+                                                                                {p.pratyantar}
                                                                                 {isPratyantarCurrent && <span className="badge badge-gold" style={{ marginLeft: '0.5rem', fontSize: '0.65rem' }}>NOW</span>}
                                                                             </td>
                                                                         )}

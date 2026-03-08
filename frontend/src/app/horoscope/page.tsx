@@ -43,6 +43,8 @@ const PLANET_SYMBOLS: Record<string, string> = {
     Venus: '♀', Saturn: '♄', Rahu: '☊', Ketu: '☋',
 };
 
+const SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+
 export default function HoroscopePage() {
     const { birthData, isSet } = useBirthData();
     const [result, setResult] = useState<{ ascendant: Record<string, unknown>; planets: Planet[]; arudhas?: ArudhaPada[] } | null>(null);
@@ -186,7 +188,7 @@ export default function HoroscopePage() {
                                     <tbody>
                                         <tr style={{ background: 'rgba(245, 200, 66, 0.04)' }}>
                                             <td style={{ fontWeight: 700, color: 'var(--accent-emerald)' }}>Ascendant ℒ</td>
-                                            <td style={{ color: 'var(--accent-gold)' }}>{result.ascendant.sign as string}</td>
+                                            <td style={{ color: 'var(--accent-gold)' }}>{SIGN_NAMES[chartAscHouse]}</td>
                                             <td>1</td>
                                             <td>{(result.ascendant.longitude as number).toFixed(4)}°</td>
                                             <td>—</td>
@@ -199,7 +201,7 @@ export default function HoroscopePage() {
                                                     {p.retrograde && <span style={{ color: 'var(--accent-rose)', marginLeft: '0.3rem', fontSize: '0.78rem' }}>℞</span>}
                                                 </td>
                                                 <td style={{ color: 'var(--accent-gold)' }}>{p.sign}</td>
-                                                <td>{p.house}</td>
+                                                <td>{((p.rasi - chartAscHouse + 12) % 12) + 1}</td>
                                                 <td>{p.longitude.toFixed(4)}°</td>
                                                 <td>{p.nakshatra} <span style={{ color: 'var(--text-muted)' }}>({p.pada})</span></td>
                                                 {selectedChart === 1 && (

@@ -98,10 +98,9 @@ def parse_birth_data(data):
 
     place = drik.Place(place_name, lat, lon, tz)
 
-    import swisseph as swe
-    # swe.julday() expects UTC. Convert local time to UTC by subtracting timezone offset.
-    local_hour = hour + minute / 60 + second / 3600
-    utc_hour = local_hour - tz
-    jd = swe.julday(year, month, day, utc_hour)
+    # Note: PyJHora's internal functions (drik.py, vimsottari.py) expect a JD 
+    # constructed from local time directly (without timezone subtraction).
+    # They handle timezone offset internally based on the `place` object.
+    jd = utils.julian_day_number(dob, tob)
 
     return dob, tob, place, jd, language

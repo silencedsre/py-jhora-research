@@ -225,9 +225,9 @@ def _serialize_dhasa_result(result):
         if isinstance(balance_info, (list, tuple)):
             if len(balance_info) >= 3:
                 balance = {
-                    "nakshatra_index": balance_info[0],
-                    "years_remaining": balance_info[1],
-                    "months_remaining": balance_info[2],
+                    "years_remaining": balance_info[0],
+                    "months_remaining": balance_info[1],
+                    "days_remaining": balance_info[2],
                 }
 
         # Parse periods: each is [dasha_lord, bhukti_lord, ..., start_date]
