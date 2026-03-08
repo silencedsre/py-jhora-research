@@ -4,13 +4,14 @@ FROM public.ecr.aws/lambda/python:3.11
 WORKDIR ${LAMBDA_TASK_ROOT}
 
 # The ephemeris data is downloaded in the GitHub Action runner and copied in.
-# We unzip it into the expected directory.
+# We unzip it into the expected directory using Python (OS agnostic).
 RUN mkdir -p PyJHora/src/jhora/data/ephe
 COPY ephemeris_data.zip* ./
-RUN if [ -f ephemeris_data.zip ]; then \
-        unzip -q ephemeris_data.zip -d PyJHora/src/jhora/data/ephe && \
-        rm ephemeris_data.zip; \
-    fi
+RUN python -c "import zipfile, os; \
+    if os.path.exists('ephemeris_data.zip'): \
+        with zipfile.ZipFile('ephemeris_data.zip', 'r') as zip_ref: \
+            zip_ref.extractall('PyJHora/src/jhora/data/ephe'); \
+        os.remove('ephemeris_data.zip')"
 
 # Copy the requirements file into the container
 COPY requirements.txt .
