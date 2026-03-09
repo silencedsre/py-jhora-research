@@ -467,7 +467,7 @@ wheels = [
 ]
 
 [[package]]
-name = "py-jhora-app"
+name = "py-jhora-research"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

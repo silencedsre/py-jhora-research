@@ -1,4 +1,4 @@
-# PyJHora
+# PyJHora-Research
 
 A Vedic Astrology API and Web App.
 
@@ -34,7 +34,6 @@ Both the frontend and backend of the project need to be run separately in differ
 
 ### 1. Run the Backend (FastAPI)
 
-From the root directory (`/Users/shreekrishnajamakatel/personal/astro/py-jhora`), run the FastAPI server using `uv`:
 
 ```bash
 uv run uvicorn api.main:app --reload
@@ -57,7 +56,7 @@ npm run dev
 
 This project is built upon the [PyJHora](https://github.com/naturalstupid/PyJHora) library. Special thanks to the original authors for their extensive work on Vedic astrology computations.
 
-Provided by [rtayoga.com](https://rtayoga.com).
+This research version is maintained by [rtayoga.com](https://rtayoga.com).
 
 ## License
 

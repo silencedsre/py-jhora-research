@@ -1,7 +1,10 @@
 [project]
-name = "py-jhora-app"
+name = "py-jhora-research"
 version = "0.1.0"
-description = "Add your description here"
+description = "Research-oriented Vedic Astrology API and Web App maintained by rtayoga.com"
+maintainers = [
+    { name = "rtayoga.com" }
+]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

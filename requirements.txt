@@ -21,17 +21,17 @@ click==8.3.1
 decorator==5.2.1
     # via ratelim
 fastapi==0.133.1
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 flatbuffers==25.12.19
     # via timezonefinder
 future==1.0.0
     # via geocoder
 geocoder==1.38.1
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 geographiclib==2.1
     # via geopy
 geopy==2.4.1
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 h11==0.16.0
     # via uvicorn
 h3==4.4.2
@@ -43,16 +43,16 @@ idna==3.11
     #   anyio
     #   requests
 lxml==6.0.2
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 mangum==0.21.0
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 numpy==2.4.2
     # via
-    #   py-jhora-app (pyproject.toml)
+    #   py-jhora-research (pyproject.toml)
     #   pandas
     #   timezonefinder
 pandas==3.0.1
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 pycparser==3.0
     # via cffi
 pydantic==2.12.5
@@ -60,22 +60,22 @@ pydantic==2.12.5
 pydantic-core==2.41.5
     # via pydantic
 pyjhora==4.7.0
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 pyswisseph==2.10.3.2
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via pandas
 python-dotenv==1.2.1
     # via uvicorn
 pytz==2025.2
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 pyyaml==6.0.3
     # via uvicorn
 ratelim==0.1.6
     # via geocoder
 requests==2.32.5
     # via
-    #   py-jhora-app (pyproject.toml)
+    #   py-jhora-research (pyproject.toml)
     #   geocoder
 six==1.17.0
     # via
@@ -84,7 +84,7 @@ six==1.17.0
 starlette==0.52.1
     # via fastapi
 timezonefinder==8.2.1
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 typing-extensions==4.15.0
     # via
     #   fastapi
@@ -99,7 +99,7 @@ typing-inspection==0.4.2
 urllib3==2.6.3
     # via requests
 uvicorn==0.41.0
-    # via py-jhora-app (pyproject.toml)
+    # via py-jhora-research (pyproject.toml)
 uvloop==0.22.1
     # via uvicorn
 watchfiles==1.1.1
