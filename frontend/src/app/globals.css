@@ -210,6 +210,8 @@ body {
   font-size: 0.92rem;
   transition: all 0.2s;
   outline: none;
+  color-scheme: dark;
+  /* Forces native date/time picker icons to be light/visible */
 }
 
 .form-input:focus,
@@ -226,6 +228,23 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
+}
+
+/* Modifier to force exactly 3 columns on desktop for perfect row wrapping */
+.form-row.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Base styles for the toggle - hidden on desktop */
+.advanced-toggle-btn {
+  display: none;
+}
+
+/* Force show advanced settings on desktop regardless of collapsed state */
+@media (min-width: 769px) {
+  .advanced-settings-container.collapsed {
+    display: grid !important;
+  }
 }
 
 .location-btn {
@@ -253,6 +272,23 @@ body {
 .location-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.custom-loc-toggle {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: var(--accent-violet);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.custom-loc-toggle:hover {
+  background: rgba(139, 92, 246, 0.2);
 }
 
 /* ── Buttons ── */
@@ -654,16 +690,52 @@ tr:hover td {
 
   /* Form refinements for mobile: bigger touch targets, readable font */
   .form-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
+  }
+
+  .form-group {
+    min-width: 0;
+  }
+
+  .form-row.grid-3 {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .form-input,
   .form-select {
     padding: 0.85rem 1rem;
     font-size: 16px;
+    max-width: 100%;
     /* Prevents auto-zoom on iOS */
     border-radius: var(--radius-sm);
+  }
+
+  /* Advanced Settings Mobile Accordion */
+  .advanced-settings-container.collapsed {
+    display: none;
+  }
+
+  .advanced-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid var(--border-subtle);
+    padding: 0.8rem;
+    color: var(--accent-violet);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .advanced-toggle-btn:hover {
+    background: rgba(139, 92, 246, 0.2);
   }
 
   /* Full width action buttons */

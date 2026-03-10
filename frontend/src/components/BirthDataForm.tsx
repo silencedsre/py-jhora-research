@@ -42,6 +42,7 @@ export default function BirthDataForm() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedCity, setSelectedCity] = useState<City | null>(KATHMANDU);
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [showAdvanced, setShowAdvanced] = useState(false);
     const [isLocating, setIsLocating] = useState(false);
     const [isCustomLoc, setIsCustomLoc] = useState(false);
     const [customLat, setCustomLat] = useState<string>('');
@@ -181,16 +182,17 @@ export default function BirthDataForm() {
 
     return (
         <form onSubmit={handleSubmit} className="birth-form-card">
-            <div className="form-row">
+            <div className="form-row grid-3">
                 <div className="form-group" ref={dropRef}>
                     <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                         <span>Place</span>
-                        <span
-                            style={{ cursor: 'pointer', color: 'var(--accent-violet)', fontSize: '0.85rem', textTransform: 'none', whiteSpace: 'nowrap', padding: '0.5rem', margin: '-0.5rem' }}
+                        <button
+                            type="button"
+                            className="custom-loc-toggle"
                             onClick={() => setIsCustomLoc(!isCustomLoc)}
                         >
                             {isCustomLoc ? 'Use Search' : 'Enter Custom'}
-                        </span>
+                        </button>
                     </label>
                     <div style={{ position: 'relative' }}>
                         <input
@@ -255,6 +257,17 @@ export default function BirthDataForm() {
                     <label className="form-label">Time</label>
                     <input className="form-input" type="time" value={time} onChange={e => setTime(e.target.value)} />
                 </div>
+            </div>
+
+            <button
+                type="button"
+                className="advanced-toggle-btn mobile-only"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+            >
+                ⚙️ {showAdvanced ? 'Hide Advanced Settings' : 'Show Advanced Settings'}
+            </button>
+
+            <div className={`form-row grid-3 advanced-settings-container ${showAdvanced ? 'expanded' : 'collapsed'}`}>
                 <div className="form-group">
                     <label className="form-label">Language</label>
                     <select className="form-select" value={language} onChange={e => setLanguage(e.target.value)}>
