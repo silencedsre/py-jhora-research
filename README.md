@@ -52,9 +52,22 @@ npm run dev
 
 ---
 
-## Credits
+## Acknowledgements & Credits
 
-This project is built upon the [PyJHora](https://github.com/naturalstupid/PyJHora) library. Special thanks to the original authors for their extensive work on Vedic astrology computations.
+This project stands on the shoulders of exceptional work in Vedic Astrology. We are deeply grateful to:
+
+### 📖 PVR Narasimha Rao
+
+- **Book:** *Vedic Astrology – An Integrated Approach* — a comprehensive treatise that forms the conceptual foundation of the PyJHora library. Almost all computed results have been verified against the examples and exercises in this book.
+- **Software:** *[Jagannatha Hora V8.0](http://www.vedicastrologer.org/jh/)* — the free Vedic astrology software that served as the reference implementation. Features beyond the book were collected from various sources and verified against JHora's output.
+
+### 🐍 PyJHora Library
+
+- **Library:** [PyJHora](https://github.com/naturalstupid/PyJHora) — the open-source Python package that powers all astrology computations in this project. This research version is built on top of PyJHora and extends it with a modern API and web interface.
+
+We extend our sincere thanks to all original authors and contributors for their immense dedication to preserving and computing Vedic Astrology with scientific rigour.
+
+---
 
 This research version is maintained by [rtayoga.com](https://rtayoga.com).
 
