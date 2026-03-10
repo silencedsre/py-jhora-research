@@ -58,7 +58,7 @@ This project stands on the shoulders of exceptional work in Vedic Astrology. We 
 
 ### 📖 PVR Narasimha Rao
 
-- **Book:** *Vedic Astrology – An Integrated Approach* — a comprehensive treatise that forms the conceptual foundation of the PyJHora library. Almost all computed results have been verified against the examples and exercises in this book.
+- **Book:** *[Vedic Astrology – An Integrated Approach](https://lakshminarayanlenasia.com/articles/vedic-astrology-an-integrated-approach2.pdf)* — a comprehensive treatise that forms the conceptual foundation of the PyJHora library. Almost all computed results have been verified against the examples and exercises in this book.
 - **Software:** *[Jagannatha Hora V8.0](http://www.vedicastrologer.org/jh/)* — the free Vedic astrology software that served as the reference implementation. Features beyond the book were collected from various sources and verified against JHora's output.
 
 ### 🔭 PyJHora Library
