@@ -28,6 +28,15 @@
   --font-serif: 'Noto Serif Devanagari', serif;
 }
 
+/* ── Utility Classes ── */
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: inline !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -621,6 +630,14 @@ tr:hover td {
   .grid-3,
   .grid-4 {
     grid-template-columns: 1fr;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: inline !important;
   }
 
   .page {

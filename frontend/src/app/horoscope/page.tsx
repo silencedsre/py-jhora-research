@@ -190,7 +190,10 @@ export default function HoroscopePage() {
                                             <td style={{ fontWeight: 700, color: 'var(--accent-emerald)' }}>Ascendant ℒ</td>
                                             <td style={{ color: 'var(--accent-gold)' }}>{SIGN_NAMES[chartAscHouse]}</td>
                                             <td>1</td>
-                                            <td>{(result.ascendant.longitude as number).toFixed(2)}°</td>
+                                            <td>
+                                                <span className="desktop-only">{(result.ascendant.longitude as number).toFixed(4)}°</span>
+                                                <span className="mobile-only">{(result.ascendant.longitude as number).toFixed(2)}°</span>
+                                            </td>
                                             <td>—</td>
                                             {selectedChart === 1 && <td>—</td>}
                                         </tr>
@@ -202,7 +205,10 @@ export default function HoroscopePage() {
                                                 </td>
                                                 <td style={{ color: 'var(--accent-gold)' }}>{p.sign}</td>
                                                 <td>{((p.rasi - chartAscHouse + 12) % 12) + 1}</td>
-                                                <td>{p.longitude.toFixed(2)}°</td>
+                                                <td>
+                                                    <span className="desktop-only">{p.longitude.toFixed(4)}°</span>
+                                                    <span className="mobile-only">{p.longitude.toFixed(2)}°</span>
+                                                </td>
                                                 <td style={{ fontSize: '0.85em' }}>{p.nakshatra} <span style={{ color: 'var(--text-muted)' }}>({p.pada})</span></td>
                                                 {selectedChart === 1 && (
                                                     <td>

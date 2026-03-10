@@ -280,38 +280,27 @@ export default function BirthDataForm() {
                         )}
                     </select>
                 </div>
-            </div>
-            <div className="toggle-wrapper">
-                <label className="toggle-container">
-                    <span>☊ Rahu/Ketu:</span>
-                    <button
-                        type="button"
-                        onClick={() => setTrueNodes(!trueNodes)}
-                        className={`toggle-btn ${trueNodes ? 'active-violet' : 'active-gold'}`}
-                    >
-                        {trueNodes ? 'True Nodes' : 'Mean Nodes'}
-                    </button>
-                </label>
-                <label className="toggle-container">
-                    <span>☀ Sunrise:</span>
-                    <button
-                        type="button"
-                        onClick={() => setSunriseDiscCenter(!sunriseDiscCenter)}
-                        className={`toggle-btn ${sunriseDiscCenter ? 'active-violet' : 'active-gold'}`}
-                    >
-                        {sunriseDiscCenter ? 'Disc Centre' : 'Disc Bottom'}
-                    </button>
-                </label>
-                <label className="toggle-container">
-                    <span>Refraction:</span>
-                    <button
-                        type="button"
-                        onClick={() => setSunriseRefraction(!sunriseRefraction)}
-                        className={`toggle-btn ${sunriseRefraction ? 'active-gold' : 'active-violet'}`}
-                    >
-                        {sunriseRefraction ? 'On' : 'Off'}
-                    </button>
-                </label>
+                <div className="form-group">
+                    <label className="form-label">Rahu/Ketu</label>
+                    <select className="form-select" value={trueNodes ? 'true' : 'mean'} onChange={e => setTrueNodes(e.target.value === 'true')}>
+                        <option value="true">True Nodes</option>
+                        <option value="mean">Mean Nodes</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Sunrise</label>
+                    <select className="form-select" value={sunriseDiscCenter ? 'center' : 'bottom'} onChange={e => setSunriseDiscCenter(e.target.value === 'center')}>
+                        <option value="center">Disc Centre</option>
+                        <option value="bottom">Disc Bottom</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Refraction</label>
+                    <select className="form-select" value={sunriseRefraction ? 'on' : 'off'} onChange={e => setSunriseRefraction(e.target.value === 'on')}>
+                        <option value="on">On</option>
+                        <option value="off">Off</option>
+                    </select>
+                </div>
             </div>
             <button className="btn btn-primary" type="submit" disabled={!date}>
                 🪷 Set Birth Data
