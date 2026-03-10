@@ -154,12 +154,12 @@ export default function DhasaPage() {
                         </div>
                     </div>
 
-                    <div className="card" style={{ marginBottom: 0, padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', background: 'rgba(255,255,255,0.02)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+                    <div className="card" style={{ marginBottom: 0, padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.8rem', background: 'rgba(255,255,255,0.02)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <span style={{ fontSize: '1rem' }}>🔍</span>
                             <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Calculation Depth:</span>
                         </div>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', flex: 1 }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', width: '100%' }}>
                             {[
                                 { val: 1, label: 'Maha' },
                                 { val: 2, label: 'Bhukti' },
@@ -249,8 +249,8 @@ export default function DhasaPage() {
                                 </button>
 
                                 {isExpanded && (
-                                    <div className="table-wrap" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-                                        <table>
+                                    <div className="table-wrap" style={{ borderTop: '1px solid var(--border-subtle)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                                        <table style={{ minWidth: '100%' }}>
                                             <thead>
                                                 <tr style={{ borderBottom: '2px solid var(--border-subtle)' }}>
                                                     <th style={{ padding: '0.8rem 1.25rem', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)' }}>Bhukti</th>
