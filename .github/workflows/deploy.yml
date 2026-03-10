@@ -6,6 +6,7 @@ on:
       - main
     # Only run pipeline if backend changes are made
     paths-ignore:
+      - 'frontend'
       - 'frontend/**'
       - 'README.md'
   # Allow manual triggering from the GitHub Actions tab
