@@ -220,6 +220,34 @@ body {
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
 }
 
+/* Custom Date/Time Icons & Overflow Fix for iOS */
+input[type="date"].form-input {
+  /* Provide a custom calendar SVG for iOS where native icons don't exist */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%239b8ec4" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="time"].form-input {
+  /* Provide a custom clock SVG */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%239b8ec4" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Hide the ugly native desktop WebKit icon but keep it clickable */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
 .form-input::placeholder {
   color: var(--text-muted);
 }
@@ -704,10 +732,11 @@ tr:hover td {
 
   .form-input,
   .form-select {
-    padding: 0.85rem 1rem;
-    font-size: 16px;
+    padding: 0.75rem 0.6rem;
+    font-size: 15px;
     max-width: 100%;
-    /* Prevents auto-zoom on iOS */
+    min-width: 0;
+    /* Prevents auto-zoom on iOS while allowing shrinking */
     border-radius: var(--radius-sm);
   }
 
