@@ -210,12 +210,42 @@ body {
   font-size: 0.92rem;
   transition: all 0.2s;
   outline: none;
+  color-scheme: dark;
+  /* Forces native date/time picker icons to be light/visible */
 }
 
 .form-input:focus,
 .form-select:focus {
   border-color: var(--accent-violet);
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* Custom Date/Time Icons & Overflow Fix for iOS */
+input[type="date"].form-input {
+  /* Provide a custom calendar SVG for iOS where native icons don't exist */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%239b8ec4" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="time"].form-input {
+  /* Provide a custom clock SVG */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%239b8ec4" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Hide the ugly native desktop WebKit icon but keep it clickable */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
 .form-input::placeholder {
@@ -226,6 +256,23 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
+}
+
+/* Modifier to force exactly 3 columns on desktop for perfect row wrapping */
+.form-row.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Base styles for the toggle - hidden on desktop */
+.advanced-toggle-btn {
+  display: none;
+}
+
+/* Force show advanced settings on desktop regardless of collapsed state */
+@media (min-width: 769px) {
+  .advanced-settings-container.collapsed {
+    display: grid !important;
+  }
 }
 
 .location-btn {
@@ -253,6 +300,23 @@ body {
 .location-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.custom-loc-toggle {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: var(--accent-violet);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.custom-loc-toggle:hover {
+  background: rgba(139, 92, 246, 0.2);
 }
 
 /* ── Buttons ── */
@@ -654,16 +718,53 @@ tr:hover td {
 
   /* Form refinements for mobile: bigger touch targets, readable font */
   .form-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
+  }
+
+  .form-group {
+    min-width: 0;
+  }
+
+  .form-row.grid-3 {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .form-input,
   .form-select {
-    padding: 0.85rem 1rem;
-    font-size: 16px;
-    /* Prevents auto-zoom on iOS */
+    padding: 0.75rem 0.6rem;
+    font-size: 15px;
+    max-width: 100%;
+    min-width: 0;
+    /* Prevents auto-zoom on iOS while allowing shrinking */
     border-radius: var(--radius-sm);
+  }
+
+  /* Advanced Settings Mobile Accordion */
+  .advanced-settings-container.collapsed {
+    display: none;
+  }
+
+  .advanced-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid var(--border-subtle);
+    padding: 0.8rem;
+    color: var(--accent-violet);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .advanced-toggle-btn:hover {
+    background: rgba(139, 92, 246, 0.2);
   }
 
   /* Full width action buttons */

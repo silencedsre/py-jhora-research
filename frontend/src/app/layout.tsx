@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 Powered by <a href="https://github.com/naturalstupid/PyJHora" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>PyJHora</a> <span style={{ opacity: 0.7 }}>(AGPL)</span>
               </div>
               <div style={{ lineHeight: 1.4 }}>
-                Provided for Research by <a href="https://github.com/silencedsre/py-jhora-research" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>py-jhora-research</a> & <a href="https://rtayoga.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>www.rtayoga.com</a>
+                Maintained by <a href="https://github.com/silencedsre/py-jhora-research" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>py-jhora-research</a> & <a href="https://rtayoga.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-primary)', textDecoration: 'none', fontWeight: 500 }}>www.rtayoga.com</a>
               </div>
             </footer>
           </div>

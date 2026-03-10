@@ -133,18 +133,19 @@ export function MiniForm({ label, onSubmit, loading, buttonLabel = 'Submit' }: M
     };
 
     return (
-        <form onSubmit={handleSubmit} className="card" style={{ marginBottom: '1rem' }}>
+        <form onSubmit={handleSubmit} className="card birth-form-card" style={{ padding: '1.2rem', margin: 0 }}>
             <div className="card-title">{label}</div>
-            <div className="form-row">
+            <div className="form-row grid-3">
                 <div className="form-group" ref={dropRef}>
-                    <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span>Place</span>
-                        <span
-                            style={{ cursor: 'pointer', color: 'var(--accent-violet)', fontSize: '0.85rem', textTransform: 'none', whiteSpace: 'nowrap', padding: '0.5rem', margin: '-0.5rem' }}
+                        <button
+                            type="button"
+                            className="custom-loc-toggle"
                             onClick={() => setIsCustomLoc(!isCustomLoc)}
                         >
                             {isCustomLoc ? 'Use Search' : 'Enter Custom'}
-                        </span>
+                        </button>
                     </label>
                     <div style={{ position: 'relative' }}>
                         <input
@@ -210,7 +211,7 @@ export function MiniForm({ label, onSubmit, loading, buttonLabel = 'Submit' }: M
                     <input className="form-input" type="time" value={time} onChange={e => setTime(e.target.value)} />
                 </div>
             </div>
-            <button className="btn btn-primary" type="submit" disabled={loading || !date}>{loading ? 'Computing...' : buttonLabel}</button>
+            <button className="btn btn-primary" style={{ marginTop: '1rem' }} type="submit" disabled={loading || !date}>{loading ? 'Computing...' : buttonLabel}</button>
         </form>
     );
 }
