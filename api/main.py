@@ -3,12 +3,13 @@ PyJHora REST API — Main Application
 """
 import sys
 import os
+import datetime
 
 # Add PyJHora source to path before anything else
 _pyjhora_src = os.path.join(os.path.dirname(__file__), 'PyJHora', 'src')
 sys.path.insert(0, os.path.abspath(_pyjhora_src))
 
-from fastapi import FastAPI, Depends, HTTPException, Security
+from fastapi import FastAPI, Request, Depends, HTTPException, Security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security.api_key import APIKeyHeader
 from mangum import Mangum
@@ -43,6 +44,53 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Global Daily Request Cap ───────────────────────────────────────────────────
+# Protects against exceeding AWS Lambda free-tier (1M req/month ≈ 33K/day).
+# Override via env var: DAILY_REQUEST_LIMIT=500
+# Paths listed in _RATE_LIMIT_EXCLUDE are never counted.
+DAILY_REQUEST_LIMIT = int(os.environ.get("DAILY_REQUEST_LIMIT", "1000"))
+_RATE_LIMIT_EXCLUDE = {"/", "/docs", "/redoc", "/openapi.json", "/health", "/api/info/usage"}
+_rate_window: dict = {"date": None, "count": 0}
+
+@app.middleware("http")
+async def global_daily_cap(request: Request, call_next):
+    if request.url.path not in _RATE_LIMIT_EXCLUDE:
+        today = datetime.date.today()
+        if _rate_window["date"] != today:
+            _rate_window["date"] = today
+            _rate_window["count"] = 0
+        _rate_window["count"] += 1
+        if _rate_window["count"] > DAILY_REQUEST_LIMIT:
+            from fastapi.responses import JSONResponse
+            origin = request.headers.get("origin", "*")
+            response = JSONResponse(
+                status_code=429,
+                content={
+                    "error": "Daily request limit reached. Please try again tomorrow.",
+                    "limit": DAILY_REQUEST_LIMIT,
+                    "resets": "midnight UTC",
+                },
+            )
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            return response
+    return await call_next(request)
+# ──────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/info/usage", dependencies=protection)
+async def get_usage():
+    """Current daily API usage — not counted against the limit."""
+    import datetime
+    today = datetime.date.today()
+    count = _rate_window["count"] if _rate_window["date"] == today else 0
+    return {
+        "requests_today": count,
+        "daily_limit": DAILY_REQUEST_LIMIT,
+        "remaining": max(0, DAILY_REQUEST_LIMIT - count),
+        "resets": "midnight UTC",
+    }
+
 
 # Register routers (protected by API Key if configured)
 protection = [Depends(get_api_key)]
