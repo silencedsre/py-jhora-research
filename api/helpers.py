@@ -104,3 +104,19 @@ def parse_birth_data(data):
     jd = utils.julian_day_number(dob, tob)
 
     return dob, tob, place, jd, language
+
+# Standard Sanskrit transliterations of Nakshatras to override PyJHora's regional Tamil (e.g., Anusham -> Anuradha)
+STANDARD_NAKSHATRA_LIST = [
+    "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", 
+    "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", 
+    "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", 
+    "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", 
+    "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada", 
+    "Uttara Bhadrapada", "Revati", "Abhijit"
+]
+
+def get_standard_nakshatra_name(index: int) -> str:
+    """Returns the standard Pan-Indian Sanskrit name for a 1-indexed PyJHora Nakshatra."""
+    if 1 <= index <= len(STANDARD_NAKSHATRA_LIST):
+        return STANDARD_NAKSHATRA_LIST[index - 1]
+    return f"Unknown ({index})"
