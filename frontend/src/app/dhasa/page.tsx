@@ -106,7 +106,7 @@ export default function DhasaPage() {
     const currentDasha = activePeriod?.dasha || null;
 
     return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', padding: '0 1.25rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
             <div className="page-header" style={{ marginBottom: '2rem' }}>
                 <h1 className="page-title">📿 Dhasa-Bhukthi</h1>
                 <p className="page-subtitle">40+ dhasa systems — Vimsottari, Ashtottari, Yogini, Narayana, and more</p>
@@ -227,25 +227,29 @@ export default function DhasaPage() {
                                     onClick={() => togglePath(mahaPath)}
                                     style={{
                                         display: 'flex', alignItems: 'center', width: '100%',
-                                        padding: '1rem 1.25rem', background: 'none', border: 'none',
-                                        color: 'var(--text-primary)', cursor: 'pointer', gap: '0.75rem',
-                                        textAlign: 'left',
+                                        padding: '1rem', background: 'none', border: 'none',
+                                        color: 'var(--text-primary)', cursor: 'pointer', gap: '0.5rem',
+                                        textAlign: 'left', flexWrap: 'wrap'
                                     }}
                                 >
                                     <span style={{
                                         fontSize: '1.2rem', fontWeight: 700,
                                         color: isActive ? 'var(--accent-gold)' : 'var(--accent-violet)',
-                                        minWidth: '5rem',
+                                        minWidth: '4.5rem',
                                     }}>
                                         {lord}
                                     </span>
-                                    {isActive && <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>ACTIVE</span>}
-                                    <span style={{ flex: 1, color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                                        Starts: {firstDate.split(' ')[0]}
-                                    </span>
-                                    <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                                        {periods.length} periods {isExpanded ? '▲' : '▼'}
-                                    </span>
+                                    {isActive && <span className="badge badge-gold" style={{ fontSize: '0.7rem', marginRight: 'auto' }}>ACTIVE</span>}
+
+                                    {/* Push the remaining items to the right on desktop, or wrap on mobile */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginLeft: isActive ? '0' : 'auto', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                                        <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem', whiteSpace: 'nowrap' }}>
+                                            Starts: {firstDate.split(' ')[0]}
+                                        </span>
+                                        <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem', whiteSpace: 'nowrap' }}>
+                                            {periods.length} periods {isExpanded ? '▲' : '▼'}
+                                        </span>
+                                    </div>
                                 </button>
 
                                 {isExpanded && (
