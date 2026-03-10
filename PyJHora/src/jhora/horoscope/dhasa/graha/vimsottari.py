@@ -380,7 +380,7 @@ def get_vimsottari_dhasa_bhukthi(
                                 out_rows.append(prefix + [clord, utils.julian_day_to_date_time_string(cstart)])
 
                     _recurse(
-                        level=const.MAHA_DHASA_DEPTH.PRATYANTARA,  # i.e., 3; will go to 4/5/6 as requested
+                        level=const.MAHA_DHASA_DEPTH.ANTARA,       # i.e., 2; we’re about to build level 3 and below
                         parent_lord=md_lord,
                         parent_start_jd=md_start_jd,
                         parent_years=md_years,
