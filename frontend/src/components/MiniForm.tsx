@@ -137,10 +137,10 @@ export function MiniForm({ label, onSubmit, loading, buttonLabel = 'Submit' }: M
             <div className="card-title">{label}</div>
             <div className="form-row">
                 <div className="form-group" ref={dropRef}>
-                    <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                         <span>Place</span>
                         <span
-                            style={{ cursor: 'pointer', color: 'var(--accent-violet)', fontSize: '0.75rem', textTransform: 'none' }}
+                            style={{ cursor: 'pointer', color: 'var(--accent-violet)', fontSize: '0.85rem', textTransform: 'none', whiteSpace: 'nowrap', padding: '0.5rem', margin: '-0.5rem' }}
                             onClick={() => setIsCustomLoc(!isCustomLoc)}
                         >
                             {isCustomLoc ? 'Use Search' : 'Enter Custom'}

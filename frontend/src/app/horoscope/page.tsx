@@ -180,8 +180,8 @@ export default function HoroscopePage() {
                                             <th>Planet</th>
                                             <th>Sign</th>
                                             <th>House</th>
-                                            <th>Longitude</th>
-                                            <th>Nakshatra</th>
+                                            <th>Long</th>
+                                            <th>Nak</th>
                                             {selectedChart === 1 && <th>Karaka</th>}
                                         </tr>
                                     </thead>
@@ -190,7 +190,7 @@ export default function HoroscopePage() {
                                             <td style={{ fontWeight: 700, color: 'var(--accent-emerald)' }}>Ascendant ℒ</td>
                                             <td style={{ color: 'var(--accent-gold)' }}>{SIGN_NAMES[chartAscHouse]}</td>
                                             <td>1</td>
-                                            <td>{(result.ascendant.longitude as number).toFixed(4)}°</td>
+                                            <td>{(result.ascendant.longitude as number).toFixed(2)}°</td>
                                             <td>—</td>
                                             {selectedChart === 1 && <td>—</td>}
                                         </tr>
@@ -202,11 +202,11 @@ export default function HoroscopePage() {
                                                 </td>
                                                 <td style={{ color: 'var(--accent-gold)' }}>{p.sign}</td>
                                                 <td>{((p.rasi - chartAscHouse + 12) % 12) + 1}</td>
-                                                <td>{p.longitude.toFixed(4)}°</td>
-                                                <td>{p.nakshatra} <span style={{ color: 'var(--text-muted)' }}>({p.pada})</span></td>
+                                                <td>{p.longitude.toFixed(2)}°</td>
+                                                <td style={{ fontSize: '0.85em' }}>{p.nakshatra} <span style={{ color: 'var(--text-muted)' }}>({p.pada})</span></td>
                                                 {selectedChart === 1 && (
                                                     <td>
-                                                        {p.chara_karaka && <span className="badge badge-gold" title="Jaimini Chara Karaka">{p.chara_karaka}</span>}
+                                                        {p.chara_karaka && <span className="badge badge-gold" style={{ padding: '0.15rem 0.3rem', fontSize: '0.7rem' }} title="Jaimini Chara Karaka">{p.chara_karaka}</span>}
                                                     </td>
                                                 )}
                                             </tr>

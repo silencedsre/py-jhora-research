@@ -302,6 +302,47 @@ body {
   font-size: 0.88rem;
 }
 
+/* ── Form Toggles (Desktop default, overriden in mobile) ── */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.toggle-btn {
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: var(--bg-card);
+  color: var(--text-muted);
+}
+
+.toggle-btn.active-violet {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--accent-violet);
+}
+
+.toggle-btn.active-gold {
+  border-color: rgba(245, 200, 66, 0.3);
+  background: rgba(245, 200, 66, 0.15);
+  color: var(--accent-gold);
+}
+
 .data-value {
   color: var(--text-primary);
   font-weight: 500;
@@ -594,8 +635,56 @@ tr:hover td {
     display: none;
   }
 
+  /* Form refinements for mobile: bigger touch targets, readable font */
   .form-row {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 0.85rem 1rem;
+    font-size: 16px;
+    /* Prevents auto-zoom on iOS */
+    border-radius: var(--radius-sm);
+  }
+
+  /* Full width action buttons */
+  .btn {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+
+  /* Stacking the preference toggles neatly */
+  .toggle-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .toggle-container {
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .toggle-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  /* Compact tables on mobile to prevent clipping */
+  .table-wrap th {
+    padding: 0.3rem 0.25rem;
+    font-size: 0.6rem;
+    white-space: nowrap;
+    letter-spacing: 0;
+  }
+
+  .table-wrap td {
+    padding: 0.3rem 0.25rem;
+    font-size: 0.72rem;
   }
 
   .planet-grid {
