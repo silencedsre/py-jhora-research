@@ -150,11 +150,15 @@ async def get_planet_positions(data: BirthData):
         # Ascendant
         asc = planet_positions[0][1]
         asc_sign = asc[0]  # zodiac sign index (0=Aries, 1=Taurus, ... 11=Pisces)
+        asc_lon = asc[1]
+        asc_nak_index, asc_pada, _ = drik.nakshatra_pada(asc_sign * 30 + asc_lon)
         result["ascendant"] = {
             "house": 1,  # Ascendant is always House 1
             "rasi": asc_sign,
             "sign": utils.RAASI_LIST[asc_sign],
-            "longitude": round(asc[1], 4),
+            "longitude": round(asc_lon, 4),
+            "nakshatra": get_standard_nakshatra_name(asc_nak_index),
+            "pada": asc_pada,
         }
 
         # Planets

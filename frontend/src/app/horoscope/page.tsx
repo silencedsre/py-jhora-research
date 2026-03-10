@@ -194,7 +194,7 @@ export default function HoroscopePage() {
                                                 <span className="desktop-only">{(result.ascendant.longitude as number).toFixed(4)}°</span>
                                                 <span className="mobile-only">{(result.ascendant.longitude as number).toFixed(2)}°</span>
                                             </td>
-                                            <td>—</td>
+                                            <td style={{ fontSize: '0.85em' }}>{result.ascendant.nakshatra as string} <span style={{ color: 'var(--text-muted)' }}>({result.ascendant.pada as number})</span></td>
                                             {selectedChart === 1 && <td>—</td>}
                                         </tr>
                                         {result.planets.filter(p => showOuterPlanets || !['Uranus', 'Neptune', 'Pluto'].includes(p.name)).map(p => (
