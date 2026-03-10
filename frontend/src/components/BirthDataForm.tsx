@@ -183,10 +183,10 @@ export default function BirthDataForm() {
         <form onSubmit={handleSubmit} className="birth-form-card">
             <div className="form-row">
                 <div className="form-group" ref={dropRef}>
-                    <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                         <span>Place</span>
                         <span
-                            style={{ cursor: 'pointer', color: 'var(--accent-violet)', fontSize: '0.75rem', textTransform: 'none' }}
+                            style={{ cursor: 'pointer', color: 'var(--accent-violet)', fontSize: '0.85rem', textTransform: 'none', whiteSpace: 'nowrap', padding: '0.5rem', margin: '-0.5rem' }}
                             onClick={() => setIsCustomLoc(!isCustomLoc)}
                         >
                             {isCustomLoc ? 'Use Search' : 'Enter Custom'}
@@ -281,51 +281,33 @@ export default function BirthDataForm() {
                     </select>
                 </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+            <div className="toggle-wrapper">
+                <label className="toggle-container">
                     <span>☊ Rahu/Ketu:</span>
                     <button
                         type="button"
                         onClick={() => setTrueNodes(!trueNodes)}
-                        style={{
-                            padding: '0.3rem 0.7rem', borderRadius: 'var(--radius-xs)',
-                            border: '1px solid rgba(139, 92, 246, 0.3)',
-                            background: trueNodes ? 'rgba(139, 92, 246, 0.2)' : 'rgba(245, 200, 66, 0.15)',
-                            color: trueNodes ? 'var(--accent-violet)' : 'var(--accent-gold)',
-                            cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600,
-                        }}
+                        className={`toggle-btn ${trueNodes ? 'active-violet' : 'active-gold'}`}
                     >
                         {trueNodes ? 'True Nodes' : 'Mean Nodes'}
                     </button>
                 </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                <label className="toggle-container">
                     <span>☀ Sunrise:</span>
                     <button
                         type="button"
                         onClick={() => setSunriseDiscCenter(!sunriseDiscCenter)}
-                        style={{
-                            padding: '0.3rem 0.7rem', borderRadius: 'var(--radius-xs)',
-                            border: '1px solid rgba(139, 92, 246, 0.3)',
-                            background: sunriseDiscCenter ? 'rgba(139, 92, 246, 0.2)' : 'rgba(245, 200, 66, 0.15)',
-                            color: sunriseDiscCenter ? 'var(--accent-violet)' : 'var(--accent-gold)',
-                            cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600,
-                        }}
+                        className={`toggle-btn ${sunriseDiscCenter ? 'active-violet' : 'active-gold'}`}
                     >
                         {sunriseDiscCenter ? 'Disc Centre' : 'Disc Bottom'}
                     </button>
                 </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                <label className="toggle-container">
                     <span>Refraction:</span>
                     <button
                         type="button"
                         onClick={() => setSunriseRefraction(!sunriseRefraction)}
-                        style={{
-                            padding: '0.3rem 0.7rem', borderRadius: 'var(--radius-xs)',
-                            border: '1px solid rgba(139, 92, 246, 0.3)',
-                            background: sunriseRefraction ? 'rgba(245, 200, 66, 0.15)' : 'rgba(139, 92, 246, 0.2)',
-                            color: sunriseRefraction ? 'var(--accent-gold)' : 'var(--accent-violet)',
-                            cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600,
-                        }}
+                        className={`toggle-btn ${sunriseRefraction ? 'active-gold' : 'active-violet'}`}
                     >
                         {sunriseRefraction ? 'On' : 'Off'}
                     </button>
