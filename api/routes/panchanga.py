@@ -46,9 +46,10 @@ async def get_panchanga(data: BirthData):
         # Nakshatra
         nak = drik.nakshatra(jd, place)
         frac_left = 100 * utils.get_fraction(nak[2], nak[3], tob_hrs)
+        from api.helpers import get_standard_nakshatra_name
         result["nakshatra"] = {
             "index": nak[0],
-            "name": utils.NAKSHATRA_LIST[nak[0] - 1],
+            "name": get_standard_nakshatra_name(nak[0]),
             "pada": nak[1],
             "start": str(utils.to_dms(nak[2])),
             "end": str(utils.to_dms(nak[3])),

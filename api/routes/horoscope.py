@@ -112,6 +112,7 @@ async def get_planet_positions(data: BirthData):
         from jhora.panchanga import drik
         from jhora.horoscope.chart import charts, house
         from jhora import utils
+        from api.helpers import get_standard_nakshatra_name
 
         planet_positions = charts.rasi_chart(jd, place)
         retrograde_planets = drik.planets_in_retrograde(jd, place)
@@ -178,7 +179,7 @@ async def get_planet_positions(data: BirthData):
                 "sign": utils.RAASI_LIST[sign_idx],
                 "longitude": round(lon, 4),
                 "retrograde": is_retro,
-                "nakshatra": utils.NAKSHATRA_LIST[nak_index - 1],
+                "nakshatra": get_standard_nakshatra_name(nak_index),
                 "pada": pada,
                 "chara_karaka": ck
             })
