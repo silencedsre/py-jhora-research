@@ -249,8 +249,8 @@ export default function DhasaPage() {
                                 </button>
 
                                 {isExpanded && (
-                                    <div className="table-wrap" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-                                        <table>
+                                    <div className="table-wrap" style={{ borderTop: '1px solid var(--border-subtle)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                                        <table style={{ minWidth: '100%' }}>
                                             <thead>
                                                 <tr style={{ borderBottom: '2px solid var(--border-subtle)' }}>
                                                     <th style={{ padding: '0.8rem 1.25rem', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)' }}>Bhukti</th>
