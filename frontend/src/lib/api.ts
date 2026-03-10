@@ -13,7 +13,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     });
     if (!res.ok) {
         const err = await res.json().catch(() => ({ detail: res.statusText }));
-        throw new Error(err.detail || 'API error');
+        throw new Error(err.error || err.detail || 'API error');
     }
     return res.json();
 }
@@ -43,6 +43,9 @@ export const searchCities = (q: string) =>
     );
 export const getDhasaSystems = () =>
     request<{ graha_dhasas: string[]; raasi_dhasas: string[]; annual_dhasas: string[] }>('/api/dhasa/systems');
+export const getUsage = () =>
+    request<{ requests_today: number; daily_limit: number; remaining: number; resets: string }>('/api/info/usage');
+
 
 // Panchanga
 export const getPanchanga = (data: BirthData) =>
