@@ -55,28 +55,34 @@ _rate_window: dict = {"date": None, "count": 0}
 
 @app.middleware("http")
 async def global_daily_cap(request: Request, call_next):
-    if request.url.path not in _RATE_LIMIT_EXCLUDE:
-        today = datetime.date.today()
-        if _rate_window["date"] != today:
-            _rate_window["date"] = today
-            _rate_window["count"] = 0
-        _rate_window["count"] += 1
-        if _rate_window["count"] > DAILY_REQUEST_LIMIT:
-            from fastapi.responses import JSONResponse
-            origin = request.headers.get("origin", "*")
-            response = JSONResponse(
-                status_code=429,
-                content={
-                    "error": "Daily request limit reached. Please try again tomorrow.",
-                    "limit": DAILY_REQUEST_LIMIT,
-                    "resets": "midnight UTC",
-                },
-            )
-            response.headers["Access-Control-Allow-Origin"] = origin
-            response.headers["Access-Control-Allow-Credentials"] = "true"
-            return response
+    # Do not limit or count CORS preflight (OPTIONS) requests
+    if request.method == "OPTIONS" or request.url.path in _RATE_LIMIT_EXCLUDE:
+        return await call_next(request)
+
+    today = datetime.date.today()
+    if _rate_window["date"] != today:
+        _rate_window["date"] = today
+        _rate_window["count"] = 0
+    _rate_window["count"] += 1
+    if _rate_window["count"] > DAILY_REQUEST_LIMIT:
+        from fastapi.responses import JSONResponse
+        origin = request.headers.get("origin", "*")
+        response = JSONResponse(
+            status_code=429,
+            content={
+                "error": "Daily request limit reached. Please try again tomorrow.",
+                "limit": DAILY_REQUEST_LIMIT,
+                "resets": "midnight UTC",
+            },
+        )
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response
     return await call_next(request)
 # ──────────────────────────────────────────────────────────────────────────────
+
+# Register routers (protected by API Key if configured)
+protection = [Depends(get_api_key)]
 
 @app.get("/api/info/usage", dependencies=protection)
 async def get_usage():
@@ -92,8 +98,6 @@ async def get_usage():
     }
 
 
-# Register routers (protected by API Key if configured)
-protection = [Depends(get_api_key)]
 app.include_router(panchanga.router, dependencies=protection)
 app.include_router(horoscope.router, dependencies=protection)
 app.include_router(charts.router, dependencies=protection)
