@@ -177,8 +177,9 @@ async def get_dhasa(system: str, data: DhasaRequest):
             )
 
         # Convert result to serializable format
+        is_raasi_dhasa = system in RAASI_DHASAS
         if isinstance(result, (list, tuple)):
-            serialized = _serialize_dhasa_result(result)
+            serialized = _serialize_dhasa_result(result, is_raasi_dhasa=is_raasi_dhasa)
         else:
             serialized = str(result)
 
@@ -192,7 +193,7 @@ async def get_dhasa(system: str, data: DhasaRequest):
         raise HTTPException(status_code=500, detail=f"Computation error: {str(e)}")
 
 
-def _serialize_dhasa_result(result):
+def _serialize_dhasa_result(result, is_raasi_dhasa=False):
     """Convert dhasa results into properly formatted dasha-bhukthi periods."""
     from jhora import utils
 
@@ -209,12 +210,18 @@ def _serialize_dhasa_result(result):
     def _name(idx):
         """Map an index to planet or rasi name."""
         if isinstance(idx, str):
+            if idx == "L": return "Lagna"
             return idx
-        if isinstance(idx, int):
-            if idx in PLANET_NAMES:
-                return PLANET_NAMES[idx]
-            if 0 <= idx < 12:
-                return RAASI_NAMES[idx]
+        if isinstance(idx, (int, float)):
+            idx = int(idx)
+            if is_raasi_dhasa:
+                if 0 <= idx < 12:
+                    return RAASI_NAMES[idx]
+            else:
+                if idx in PLANET_NAMES:
+                    return PLANET_NAMES[idx]
+                if 0 <= idx < 12:
+                    return RAASI_NAMES[idx] # Fallback for raasi-based variations of graha dashas
         return str(idx)
 
     # Handle tuple format: (balance_info, periods_list)
@@ -230,31 +237,41 @@ def _serialize_dhasa_result(result):
                     "days_remaining": balance_info[2],
                 }
 
-        # Parse periods: each is [dasha_lord, bhukti_lord, ..., start_date]
+        # Parse periods: each is [dasha_lord, bhukti_lord, ..., [maybe date], [maybe duration]]
         periods = []
         if isinstance(periods_raw, (list, tuple)):
             for entry in periods_raw:
-                if isinstance(entry, (list, tuple)) and len(entry) >= 3:
-                    period_dict = {
-                        "dasha": _name(entry[0]),
-                        "bhukti": _name(entry[1]),
-                    }
-                    if len(entry) == 4:
-                        period_dict["pratyantar"] = _name(entry[2])
-                    elif len(entry) == 5:
-                        period_dict["pratyantar"] = _name(entry[2])
-                        period_dict["sookshma"] = _name(entry[3])
-                    elif len(entry) == 6:
-                        period_dict["pratyantar"] = _name(entry[2])
-                        period_dict["sookshma"] = _name(entry[3])
-                        period_dict["prana"] = _name(entry[4])
-                    elif len(entry) >= 7:
-                        period_dict["pratyantar"] = _name(entry[2])
-                        period_dict["sookshma"] = _name(entry[3])
-                        period_dict["prana"] = _name(entry[4])
-                        period_dict["deha"] = _name(entry[5])
-
-                    period_dict["start_date"] = str(entry[-1]).strip()
+                if isinstance(entry, (list, tuple)) and len(entry) >= 2:
+                    # Identify where the date string is. Usually last or second to last.
+                    # Date strings in JHora usually look like "YYYY-MM-DD" or "DD-MMM-YYYY"
+                    date_idx = -1
+                    duration = None
+                    
+                    # Check if the last element is likely a duration (float/int that isn't a date string)
+                    if len(entry) >= 3:
+                        last_val = entry[-1]
+                        if isinstance(last_val, (int, float)) or (isinstance(last_val, str) and not (":" in last_val or "-" in last_val)):
+                            duration = last_val
+                            date_idx = -2
+                    
+                    start_date = str(entry[date_idx]).strip()
+                    lords = entry[:date_idx] if date_idx != -1 else entry[:-1]
+                    
+                    if not lords: # Fallback if list structure is unexpected
+                        lords = [entry[0]]
+                    
+                    depth_keys = ["dasha", "bhukti", "pratyantar", "sookshma", "prana", "deha"]
+                    period_dict = {}
+                    for i, lord in enumerate(lords):
+                        if i < len(depth_keys):
+                            period_dict[depth_keys[i]] = _name(lord)
+                        else:
+                            period_dict[f"level_{i+1}"] = _name(lord)
+                    
+                    period_dict["start_date"] = start_date
+                    if duration is not None:
+                        period_dict["duration"] = duration
+                        
                     periods.append(period_dict)
                 else:
                     periods.append({"raw": str(entry)})
@@ -282,45 +299,43 @@ def _serialize_dhasa_result(result):
                 # Annual dhasa format: [lord, [[sub_lord, date], ...], duration_days]
                 if (len(item) >= 2 and isinstance(item[1], list)
                         and len(item[1]) > 0 and isinstance(item[1][0], list)):
-                    lord_name = "Lagna" if item[0] == "L" else _name(item[0])
+                    lord_name = _name(item[0])
                     duration = round(item[2], 2) if len(item) > 2 and isinstance(item[2], (int, float)) else None
                     for sub in item[1]:
                         if isinstance(sub, (list, tuple)) and len(sub) >= 2:
-                            bhukti_name = "Lagna" if sub[0] == "L" else _name(sub[0])
+                            bhukti_name = _name(sub[0])
                             periods.append({
                                 "dasha": lord_name,
                                 "bhukti": bhukti_name,
                                 "start_date": str(sub[1]).strip(),
-                                "duration_days": duration,
+                                "duration": duration,
                             })
-                # Standard format: [dasha, bhukti, ..., date]
-                elif len(item) >= 3 and not isinstance(item[1], list):
-                    period_dict = {
-                        "dasha": "Lagna" if item[0] == "L" else _name(item[0]),
-                        "bhukti": "Lagna" if item[1] == "L" else _name(item[1]),
-                    }
-                    if len(item) == 4:
-                        period_dict["pratyantar"] = "Lagna" if item[2] == "L" else _name(item[2])
-                    elif len(item) == 5:
-                        period_dict["pratyantar"] = "Lagna" if item[2] == "L" else _name(item[2])
-                        period_dict["sookshma"] = "Lagna" if item[3] == "L" else _name(item[3])
-                    elif len(item) == 6:
-                        period_dict["pratyantar"] = "Lagna" if item[2] == "L" else _name(item[2])
-                        period_dict["sookshma"] = "Lagna" if item[3] == "L" else _name(item[3])
-                        period_dict["prana"] = "Lagna" if item[4] == "L" else _name(item[4])
-                    elif len(item) >= 7:
-                        period_dict["pratyantar"] = "Lagna" if item[2] == "L" else _name(item[2])
-                        period_dict["sookshma"] = "Lagna" if item[3] == "L" else _name(item[3])
-                        period_dict["prana"] = "Lagna" if item[4] == "L" else _name(item[4])
-                        period_dict["deha"] = "Lagna" if item[5] == "L" else _name(item[5])
-
-                    period_dict["start_date"] = str(item[-1]) if len(item) > 2 else ""
+                # Standard format: [lord1, lord2, ..., [maybe date], [maybe duration]]
+                elif len(item) >= 2:
+                    date_idx = -1
+                    duration = None
+                    if len(item) >= 3:
+                        last_val = item[-1]
+                        if isinstance(last_val, (int, float)) or (isinstance(last_val, str) and not (":" in last_val or "-" in last_val)):
+                            duration = last_val
+                            date_idx = -2
+                    
+                    start_date = str(item[date_idx]).strip()
+                    lords = item[:date_idx] if date_idx != -1 else item[:-1]
+                    if not lords: lords = [item[0]]
+                    
+                    depth_keys = ["dasha", "bhukti", "pratyantar", "sookshma", "prana", "deha"]
+                    period_dict = {}
+                    for i, lord in enumerate(lords):
+                        if i < len(depth_keys):
+                            period_dict[depth_keys[i]] = _name(lord)
+                        else:
+                            period_dict[f"level_{i+1}"] = _name(lord)
+                    
+                    period_dict["start_date"] = start_date
+                    if duration is not None:
+                        period_dict["duration"] = duration
                     periods.append(period_dict)
-                elif len(item) == 2:
-                    periods.append({
-                        "dasha": _name(item[0]),
-                        "duration": str(item[1]),
-                    })
                 else:
                     periods.append({"raw": str(item)})
             else:
