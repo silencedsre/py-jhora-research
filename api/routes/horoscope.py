@@ -3,7 +3,7 @@ Horoscope API routes.
 """
 from fastapi import APIRouter, HTTPException
 from api.models import BirthData, ChartRequest
-from api.helpers import parse_birth_data
+from api.helpers import parse_birth_data, get_standard_nakshatra_name
 
 router = APIRouter(prefix="/api/horoscope", tags=["Horoscope"])
 
@@ -73,11 +73,46 @@ async def get_divisional_chart(data: ChartRequest):
             divisional_chart_factor=data.chart_type,
         )
 
+        from jhora.panchanga import drik
+        from jhora import utils
+        
+        # We need structured planet data for the divisional chart
+        from jhora.horoscope.chart import charts
+        planet_positions_dn = charts.divisional_chart(
+            jd, place, 
+            divisional_chart_factor=data.chart_type, 
+            chart_method=data.chart_method
+        )
+        # We also need D1 positions for correct Nakshatra/Pada (which are ecliptic properties)
+        planet_positions_d1 = charts.rasi_chart(jd, place)
+        
+        planets = []
+        for i, (p, (sign_idx_dn, lon_dn)) in enumerate(planet_positions_dn[1:]):
+            # p should match between dn and d1 lists in the same order
+            _, (sign_idx_d1, lon_d1) = planet_positions_d1[i+1]
+            
+            # Nakshatra is ALWAYS based on D1 longitude on the ecliptic
+            nak_index, pada, _ = drik.nakshatra_pada(sign_idx_d1 * 30 + lon_d1)
+            house_num = ((sign_idx_dn - ascendant_house) % 12) + 1
+            
+            planets.append({
+                "id": p,
+                "name": utils.PLANET_NAMES[p],
+                "house": house_num,
+                "rasi": sign_idx_dn,
+                "sign": utils.RAASI_LIST[sign_idx_dn],
+                "longitude": round(lon_dn, 4),
+                "retrograde": p in drik.planets_in_retrograde(jd, place),
+                "nakshatra": get_standard_nakshatra_name(nak_index),
+                "pada": pada,
+            })
+
         return {
             "chart_type": f"D{data.chart_type}",
             "horoscope": horoscope_info,
             "charts": horoscope_charts,
             "ascendant_house": ascendant_house,
+            "planets": planets,
         }
 
     except ValueError as e:
